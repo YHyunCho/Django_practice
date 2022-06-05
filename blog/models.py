@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 import os
 
 # Create your models here.
@@ -13,10 +14,11 @@ class Post(models.Model) :
   created_at = models.DateTimeField(auto_now_add=True)
   update_at = models.DateTimeField(auto_now=True)
 
+  author = models.ForeignKey(User, on_delete=models.CASCADE)
 
   # 포스트 제목이 뜨게 해주는 코드
   def __str__(self) :
-    return f'[{self.pk}]{self.title}'
+    return f'[{self.pk}]{self.title} :: {self.author}'
     # self.pk -> 해당 포스트의 pk 값 / self.title -> 해당 포스트의 title 값
 
   def get_absolute_url(self) :
