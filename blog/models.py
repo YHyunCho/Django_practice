@@ -1,8 +1,20 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 import os
 
 # Create your models here.
+
+class Category(models.Model) :
+  name = models.CharField(max_length=50, unique=True)
+  slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+
+  def __str__(self):
+    return self.name
+
+  class Meta:
+    verbose_name_plural = 'Categories'
+
 class Post(models.Model) :
   title = models.CharField(max_length=30)
   hook_text = models.CharField(max_length=100, blank=True)
@@ -15,6 +27,8 @@ class Post(models.Model) :
   update_at = models.DateTimeField(auto_now=True)
 
   author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
+  category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
 
   # 포스트 제목이 뜨게 해주는 코드
   def __str__(self) :
